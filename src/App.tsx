@@ -1,55 +1,38 @@
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { ShopPage } from './pages/shop/ShopPage';
+import { CartPage } from './pages/cart/CartPage';
+import { CheckoutPage } from './pages/checkout/CheckoutPage';
+import { ThanksPage } from './pages/checkout/ThanksPage';
+import { LoginPage } from './pages/login/LoginPage';
+import { CMSPage } from './pages/cms/CMSPage';
+import { CMSProductsPage } from './pages/cms/products/CMSProductsPage';
+import { CMSOrdersPage } from './pages/cms/orders/CMSOrdersPage';
+import { NavBar } from './shared/components/core/NavBar';
+
 function App() {
-  return (
-    <>
-      <div className="page">
-        <div className="title">UIKIT</div>
-        <table className="table-auto w-full hover">
-          <thead>
-            <tr>
-              <th>Song</th>
-              <th>Artist</th>
-              <th>Year</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-              <td>Malcolm Lockyer</td>
-              <td>1961</td>
-            </tr>
-            <tr>
-              <td>Witchy Woman</td>
-              <td>The Eagles</td>
-              <td>1972</td>
-            </tr>
-            <tr>
-              <td>Shining Star</td>
-              <td>Earth, Wind, and Fire</td>
-              <td>1975</td>
-            </tr>
-          </tbody>
-        </table>
+    return (
+        <BrowserRouter>
+            <NavBar />
+            <div className="page">
+                <Routes>
+                    <Route path="shop" element={<ShopPage />} />
+                    <Route path="cart" element={<CartPage />} />
+                    <Route path="checkout" element={<CheckoutPage />} />
+                    <Route path="thanks" element={<ThanksPage />} />
+                    <Route path="login" element={<LoginPage />} />
 
-        <br />
-        <input type="text" />
-        <br />
-        <input type="text" className="error" />
-        <br />
+                    <Route path="cms" element={<CMSPage />}>
+                        <Route path="products" element={<CMSProductsPage />} />
+                        <Route path="orders" element={<CMSOrdersPage />} />
+                        <Route index element={<Navigate to="products" />} />
+                    </Route>
 
-        <button className="btn">Default</button>
-        <button className="btn" disabled>
-          Disabled
-        </button>
-        <button className="btn dark">Dark</button>
-        <button className="btn danger">Danger</button>
-        <button className="btn primary">Primary</button>
-        <button className="btn accent">Accent</button>
-        <button className="btn success">Success</button>
-        <button className="btn outline">Outline</button>
-        <button className="btn outline lg">Outline</button>
-      </div>
-    </>
-  );
+                    <Route path="*" element={<Navigate to="shop" />} />
+                </Routes>
+            </div>
+
+        </BrowserRouter >
+    )
 }
 
-export default App;
+export default App
