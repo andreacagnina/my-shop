@@ -10,6 +10,8 @@ export function ShopPage() {
     // stato pending per gestire le connessioni + lente. tipizziamo come booleano e inizializziamo a false
     const [pending, setPending] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
+
+
     // RENDIRIZZIAMO SOLO ALL'INIZIO LA FUNZIONE LOADDATA CHE OTTIENE I DATI DAL NOSTRO DB IN POCKETBASE PD
     //     PD.collection('PRODUCTS') ACCEDE ALLA COLLEZIONE PRODOTTI, .GETLIST<Product>() E' UNA PROMISE E RICHIAMA TUTTI GLI ELEMENTI DELLA COLLEZIONE  ELI TIPIZZA COME ProductCard, QUANDO I DATI SONO PRONTI .THEN(RES => {} MODIFICA IL NOSTRO ARRAY INIZIALMENTE VUOTO ANDANDO AD INSERIRE i prodotti ricevuti RES.ITEMS)
     useEffect(() => { loadData() }, [])
