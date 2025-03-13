@@ -3,6 +3,7 @@ import { CartPage, CheckoutPage, CMSOrdersPage, CMSPage, CMSProductsPage, LoginP
 import { NavBar } from './shared';
 
 
+
 function App() {
     return (
         <BrowserRouter>

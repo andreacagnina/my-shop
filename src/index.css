@@ -21,7 +21,6 @@ body {
 }
 
 
-
 .page {
   @apply max-w-screen-lg mx-auto pt-24 px-3;
 }
