@@ -16,7 +16,7 @@ export function CartPanel() {
     }
 
     return (
-        <div className="fixed bg-red-400 right-4 top-24 p-3 rounded-xl shadow-2xl w-96">
+        <div className="fixed bg-pink-500 right-4 top-24 p-3 rounded-xl shadow-2xl w-96">
             <ul className="flex flex-col gap-4">
 
                 {
