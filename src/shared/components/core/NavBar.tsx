@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import logo from '../../../assets/laptop.png';
 import { CartPanel } from "./CartPanel";
-import { useCartPanel } from "../../../services/cart";
+import { selectTotalCartItems, useCart, useCartPanel } from "../../../services/cart";
 
 const isActive = (obj: { isActive: boolean; }) => {
     return obj.isActive ? 'text-xl text-sky-400 font-bold' : 'text-xl text-white'
@@ -11,6 +11,7 @@ export function NavBar() {
     // recuperiamo il booleano della variabile open dalla cartella services/cart/useCartPanel
     const isCartPanelOpened = useCartPanel(state => state.open);
     const toggleCartPanel = useCartPanel(state => state.toggle);
+    const totalCartItems = useCart(selectTotalCartItems);
 
 
     return (
@@ -23,7 +24,7 @@ export function NavBar() {
 
                 {/* Al click del pulsante evochiamo la funzione toggle per fare vedere o nascondere il cart panel */}
                 <div>
-                    <button className="btn accent lg" onClick={toggleCartPanel}>Cart: 0</button>
+                    <button className="btn accent lg" onClick={toggleCartPanel}>Cart: {totalCartItems}</button>
                 </div>
 
                 {/* Cart Panel */}
