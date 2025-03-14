@@ -1,9 +1,11 @@
+import { NavLink } from 'react-router-dom';
 import { useCart } from '../../services/cart';
-import { selectCartList, selectTotalCartCost } from '../../services/cart/cart.selectors'
+import { selectCartIsEmpty, selectCartList, selectTotalCartCost } from '../../services/cart/cart.selectors'
 
 export function CartPage() {
     const list = useCart(selectCartList);
     const totalCost = useCart(selectTotalCartCost);
+    const isEmpty = useCart(selectCartIsEmpty)
     const increaseQty = useCart(state => state.increaseQty);
     const decreaseQty = useCart(state => state.decreaseQty);
 
@@ -22,9 +24,9 @@ export function CartPage() {
                     </div>
                     <div className='flex flex-col sm:flex-row gap-4 items-center'>
                         <div className='flex items-center gap-3'>
-                            <button className="btn primary" onClick={() => increaseQty(p.product.id)}>+</button>
-                            <div>qty: {p.qty}</div>
                             <button className="btn primary" onClick={() => decreaseQty(p.product.id)}>-</button>
+                            <div>qty: {p.qty}</div>
+                            <button className="btn primary" onClick={() => increaseQty(p.product.id)}>+</button>
                         </div>
 
                         <div className='w-20 text-center'>
@@ -34,7 +36,14 @@ export function CartPage() {
                     </div>
                 </li>))}
             </ul>
-            <div className="text-4xl text-right">Total: &euro; {totalCost}</div>
+            <div className="text-4xl text-right my-4 mr-4">Total: &euro; {totalCost}</div>
+
+            {
+                !isEmpty &&
+                <div className="flex justify-center">
+                    <NavLink to='/checkout' className='btn primary lg'>Confirm Order</NavLink>
+                </div>
+            }
         </div>
     );
 }
