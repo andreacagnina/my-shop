@@ -10,7 +10,8 @@ export interface AuthState {
 }
 export const useAuth = create<AuthState>((set) => ({
     error: false,
-    token: null,
+    // LocalStorage
+    token: AuthService.getToken(),
     isLogged: false,
     login:
         async (username, password) => {
