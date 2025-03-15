@@ -18,6 +18,7 @@ export const useAuth = create<AuthState>((set) => ({
             try {
                 await AuthService.login(username, password)
                 set({ isLogged: AuthService.isLogged(), token: AuthService.getToken() })
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (e) {
                 set({ error: true, isLogged: false })
             }

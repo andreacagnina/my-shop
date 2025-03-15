@@ -1,6 +1,7 @@
 import { pb } from '../../pocketbase';
-export function login(username: string, passowrd: string) {
-    return pb.admins.authWithPassword(username, passowrd)
+
+export function login(username: string, password: string) {
+    return pb.collection('users').authWithPassword(username, password); // ✅ CORRETTO
 }
 
 export function logout() {
