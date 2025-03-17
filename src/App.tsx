@@ -22,12 +22,13 @@ function App() {
                         <Route index element={<Navigate to="products" />} />
                     </Route>
 
+
                     <Route path="*" element={<Navigate to="shop" />} />
                 </Routes>
             </div>
 
         </BrowserRouter >
-    )
+    );
 }
 
-export default App
+export default App;
