@@ -1,17 +1,32 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
-export interface CartStateOverlay {
-    open: boolean;
-    toggle: () => void;
-    openOverlay: () => void;
-    closeOverlay: () => void;
+/**
+ * **useCartPanel** è uno store Zustand per gestire l'apertura e chiusura del pannello del carrello.
+ *
+ * **Funzioni disponibili:**
+ * - `toggle`: Alterna lo stato aperto/chiuso del pannello.
+ * - `openOverlay`: Apre esplicitamente il pannello.
+ * - `closeOverlay`: Chiude esplicitamente il pannello.
+ *
+ * **Vantaggi di Zustand:**
+ * - Più leggero e semplice da usare rispetto a Redux.
+ * - Non necessita di boilerplate complessi.
+ * - Lo stato è accessibile da qualsiasi componente senza dover passare props.
+ */
+
+interface CartPanelState {
+    open: boolean; // Indica se il pannello è aperto
+    toggle: () => void; // Alterna lo stato aperto/chiuso
+    openOverlay: () => void; // Forza l'apertura del pannello
+    closeOverlay: () => void; // Forza la chiusura del pannello
 }
 
-export const useCartPanel = create<CartStateOverlay>((set, get) => ({
-    open: false,
-    toggle: () => set({ open: !get().open }),
-    openOverlay: () => set({ open: true }),
-    closeOverlay: () => set({ open: false }),
-}))
+export const useCartPanel = create<CartPanelState>((set) => ({
+    open: false, // Il pannello è chiuso di default
 
-// gestiamo l'apertura del pannello cart tipizzando con una intefaccia cartstateoverlay open in booleano e gli altri in metodi per modificare questo valore. Dobbiamo usare set e get come parametri che riceviamo dalla funzione create per leggere e modificare lo stato
+    toggle: () => set((state) => ({ open: !state.open })), // Alterna tra aperto e chiuso
+
+    openOverlay: () => set({ open: true }), // Apre il pannello (utile per azioni esplicite, es. clic su un pulsante)
+
+    closeOverlay: () => set({ open: false }) // Chiude il pannello
+}));

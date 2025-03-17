@@ -1,11 +1,16 @@
-import { PropsWithChildren } from "react"
-import { selectAuthIsLogged, useAuth } from "../../../services/auth"
-import { Navigate } from "react-router-dom"
+import { PropsWithChildren } from "react";
+import { selectAuthIsLogged, useAuth } from "../../../services/auth";
+import { Navigate } from "react-router-dom";
 
 export function PrivateRoute(props: PropsWithChildren) {
-    const isLogged = useAuth(selectAuthIsLogged)
+    // Recuperiamo lo stato di autenticazione dell'utente
+    const isLogged = useAuth(selectAuthIsLogged);
+
     return (
         <>
-            {isLogged ? props.children : <Navigate to="/login" />}</>
-    )
+            {/* Se l'utente è autenticato, mostriamo i figli (componenti interni) */}
+            {/* Altrimenti, reindirizziamo alla pagina di login */}
+            {isLogged ? props.children : <Navigate to="/login" />}
+        </>
+    );
 }
