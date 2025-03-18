@@ -7,15 +7,16 @@ import { Loader, ServerError } from "../../../shared";
  * 
  * **Funzionalità:**
  * - Recupera lo stato e le azioni dal servizio `useProductsService()`.
- * - Permette di caricare i prodotti con un pulsante GET.
- * - Mostra un messaggio di caricamento mentre i dati vengono recuperati.
- * - Gestisce eventuali errori nella richiesta API.
+ * - Carica automaticamente i prodotti quando il componente viene montato.
+ * - Mostra un indicatore di caricamento durante il recupero dei dati.
+ * - Gestisce eventuali errori nella richiesta API e li visualizza all'utente.
+ * - Permette di eliminare un prodotto con un'icona di eliminazione.
  */
 export function CMSProductsPage() {
     const { state, actions } = useProductsService(); // Stato e azioni del servizio prodotti
 
-    useEffect(() => { actions.getProducts(); }, []); //Il componente viene caricato quando la relativa route del cms viene aperta
-
+    // Effettua il recupero dei prodotti quando il componente viene montato
+    useEffect(() => { actions.getProducts(); }, []);
 
     return (
         <div>
@@ -38,20 +39,40 @@ export function CMSProductsPage() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                product name
-                            </td>
-                            <td>
-                                image
-                            </td>
-                            <td className="text-center">
-                                cost
-                            </td>
-                            <td className="text-center">
-                                <i className="fa fa-trash"></i>
-                            </td>
-                        </tr>
+                        {state.products.map((item) => {
+                            return (
+                                <tr
+                                    key={item.id}
+                                    onClick={() => actions.setActiveItem(item)} // Imposta l'elemento attivo quando viene cliccato
+                                >
+                                    {/* Nome del prodotto */}
+                                    <td>
+                                        {item.name}
+                                    </td>
+
+                                    {/* Miniatura del prodotto (se disponibile) */}
+                                    <td>
+                                        {item.tmb && <img src={item.tmb} alt={item.name} className="h-16 rounded-xl" />}
+                                    </td>
+
+                                    {/* Prezzo del prodotto */}
+                                    <td className="text-center">
+                                        {item.cost} &euro;
+                                    </td>
+
+                                    {/* Icona per eliminare il prodotto */}
+                                    <td className="text-center">
+                                        <i
+                                            className="fa fa-trash"
+                                            onClick={(e) => {
+                                                e.stopPropagation(); // Evita la selezione dell'elemento durante l'eliminazione
+                                                actions.deleteProduct(item.id); // Chiama l'azione di eliminazione
+                                            }}
+                                        ></i>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
