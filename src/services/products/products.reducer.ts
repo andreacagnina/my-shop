@@ -73,7 +73,8 @@ export function productsReducer(state: ProductsState, action: ProductsActions) {
                 ...state,
                 products: state.products.map(item => item.id === payload.id ? payload : item),
                 error: null,
-                pending: false
+                pending: false,
+                activeItem: null,
             };
 
         /**

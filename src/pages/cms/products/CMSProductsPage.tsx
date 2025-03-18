@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useProductsService } from "../../../services/products";
 import { Loader, ServerError } from "../../../shared";
+import { CMSProductsList } from "./components/CMSProductsList";
+import { CMSProductForm } from "./components/CMSProductForm";
 
 /**
  * **CMSProductsPage** è la pagina dedicata alla gestione dei prodotti nel CMS.
@@ -28,54 +30,12 @@ export function CMSProductsPage() {
             {/* Mostra un messaggio di errore se la richiesta fallisce */}
             {state.error && <ServerError message={state.error} />}
 
-            <div className="mt-12">
-                <table className="table-auto w-full hover">
-                    <thead>
-                        <tr>
-                            <th className="text-left">PRODUCTS</th>
-                            <th className="text-left">IMAGE</th>
-                            <th>COST</th>
-                            <th>DELETE</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {state.products.map((item) => {
-                            return (
-                                <tr
-                                    key={item.id}
-                                    onClick={() => actions.setActiveItem(item)} // Imposta l'elemento attivo quando viene cliccato
-                                >
-                                    {/* Nome del prodotto */}
-                                    <td>
-                                        {item.name}
-                                    </td>
+            <CMSProductForm activeItem={state.activeItem} onClose={actions.resetActiveItem} onAdd={actions.addProduct} onEdit={actions.editProduct} />
 
-                                    {/* Miniatura del prodotto (se disponibile) */}
-                                    <td>
-                                        {item.tmb && <img src={item.tmb} alt={item.name} className="h-16 rounded-xl" />}
-                                    </td>
+            <CMSProductsList items={state.products} activeItem={state.activeItem} onEditItem={actions.setActiveItem} onDeleteItem={actions.deleteProduct
+            } />
 
-                                    {/* Prezzo del prodotto */}
-                                    <td className="text-center">
-                                        {item.cost} &euro;
-                                    </td>
-
-                                    {/* Icona per eliminare il prodotto */}
-                                    <td className="text-center">
-                                        <i
-                                            className="fa fa-trash"
-                                            onClick={(e) => {
-                                                e.stopPropagation(); // Evita la selezione dell'elemento durante l'eliminazione
-                                                actions.deleteProduct(item.id); // Chiama l'azione di eliminazione
-                                            }}
-                                        ></i>
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            <button className="btn primary" onClick={() => actions.setActiveItem({})}>ADD NEW</button>
+        </div >
     );
 }
