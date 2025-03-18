@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useProductsService } from "../../../services/products";
+import { Loader, ServerError } from "../../../shared";
 
 /**
  * **CMSProductsPage** è la pagina dedicata alla gestione dei prodotti nel CMS.
@@ -12,32 +14,47 @@ import { useProductsService } from "../../../services/products";
 export function CMSProductsPage() {
     const { state, actions } = useProductsService(); // Stato e azioni del servizio prodotti
 
-    /**
-     * Richiama la funzione per ottenere i prodotti dal database.
-     */
-    async function getProductsHandler() {
-        actions.getProducts();
-    }
+    useEffect(() => { actions.getProducts(); }, []); //Il componente viene caricato quando la relativa route del cms viene aperta
+
 
     return (
         <div>
             <h1 className="title">&nbsp;CMS</h1>
 
-            Pagina prodotti
-
-            <hr className="my-8" />
-
             {/* Mostra il messaggio di caricamento se la richiesta è in corso */}
-            {state.pending && <div>Loading...</div>}
+            {state.pending && <Loader />}
 
             {/* Mostra un messaggio di errore se la richiesta fallisce */}
-            {state.error && <div>{state.error}</div>}
+            {state.error && <ServerError message={state.error} />}
 
-            {/* Pulsante per caricare i prodotti */}
-            <button className="btn primary" onClick={getProductsHandler}>GET</button>
-
-            {/* Mostra lo stato attuale in formato JSON per debugging */}
-            <pre>{JSON.stringify(state, null, 2)}</pre>
+            <div className="mt-12">
+                <table className="table-auto w-full hover">
+                    <thead>
+                        <tr>
+                            <th className="text-left">PRODUCTS</th>
+                            <th className="text-left">IMAGE</th>
+                            <th>COST</th>
+                            <th>DELETE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                product name
+                            </td>
+                            <td>
+                                image
+                            </td>
+                            <td className="text-center">
+                                cost
+                            </td>
+                            <td className="text-center">
+                                <i className="fa fa-trash"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
