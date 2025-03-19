@@ -31,7 +31,7 @@ export const useAuth = create<AuthState>((set) => ({
     token: AuthService.getToken(),
 
     // Determina se l'utente è loggato
-    isLogged: false,
+    isLogged: AuthService.isLogged(),
 
     /**
      * Effettua il login chiamando il servizio di autenticazione.

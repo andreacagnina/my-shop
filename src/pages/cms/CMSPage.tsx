@@ -16,6 +16,7 @@ const isActive = (obj: { isActive: boolean; }) => {
 export function CMSPage() {
     return (
         <div>
+            <h1 className="title">&nbsp;CMS</h1>
             {/* Link per navigare tra le sezioni del CMS */}
             <NavLink to="/cms/products" className={isActive}> Products</NavLink>
             <NavLink to="/cms/orders" className={isActive}> Orders</NavLink>

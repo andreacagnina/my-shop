@@ -22,7 +22,6 @@ export function CMSProductsPage() {
 
     return (
         <div>
-            <h1 className="title">&nbsp;CMS</h1>
 
             {/* Mostra il messaggio di caricamento se la richiesta è in corso */}
             {state.pending && <Loader />}

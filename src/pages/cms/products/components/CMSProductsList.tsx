@@ -11,7 +11,7 @@ interface CMSProductsListProps {
 export function CMSProductsList(props: CMSProductsListProps) {
     return (
         <div className="mt-12">
-            <table className="table-auto w-full hover">
+            <table className="table-auto w-full hover mb-3">
                 <thead>
                     <tr>
                         <th className="text-left">PRODUCTS</th>

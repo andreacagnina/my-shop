@@ -1,12 +1,15 @@
 import { ChangeEvent, useState } from "react";
 import { selectCartList, selectTotalCartCost, useCart } from "../../../services/cart";
 import { useNavigate } from "react-router-dom";
+import { OrderForm } from "../../../model/order-from";
+import { useOrdersService } from "../../../services/orders";
+import { ClientResponseError } from "pocketbase";
 
 /**
  * **Regex per la validazione delle email**
  * Verifica che l'indirizzo email sia conforme a un formato valido.
  */
-export const EMAIL_REGEX = /^(([^<>()\[\]\.,;:\s@"]+(\.[^<>()\[\]\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+export const EMAIL_REGEX = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 /**
  * **useCheckout** è un custom hook che gestisce il processo di checkout.
@@ -21,6 +24,8 @@ export function useCheckout() {
     const order = useCart(selectCartList); // Recupera la lista di prodotti nel carrello
     const totalCartCost = useCart(selectTotalCartCost); // Recupera il costo totale del carrello
     const clearCart = useCart(state => state.clearCart); // Funzione per svuotare il carrello dopo l'ordine
+
+    const { state, addOrder } = useOrdersService();
 
     // Stato per i dati dell'utente
     const [user, setUser] = useState({ name: '', email: '' });
@@ -50,15 +55,21 @@ export function useCheckout() {
      */
     function sendOrder(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        const orderInfo = {
+        const orderInfo: OrderForm = {
             user,
             order,
             status: 'pending',
             total: totalCartCost
         };
-        // chiamata al server
-        clearCart();
-        navigate('/thanks');
+
+        addOrder(orderInfo).then((res) => {
+            if (!(res instanceof ClientResponseError)) {
+                // chiamata al server
+                clearCart();
+                navigate('/thanks');
+            }
+        });
+
     }
 
     // **Validazione dei dati**
@@ -78,6 +89,7 @@ export function useCheckout() {
         },
         totalCartCost,
         user,
-        dirty
+        dirty,
+        error: state.error
     };
 }

@@ -1,5 +1,6 @@
 import { clsx } from "clsx";
 import { useCheckout } from "./hooks/useCheckout";
+import { ServerError } from "../../shared";
 
 /**
  * **CheckoutPage** gestisce il processo di checkout dell'utente.
@@ -14,11 +15,13 @@ import { useCheckout } from "./hooks/useCheckout";
  * - Rende il codice più leggibile e riutilizzabile.
  */
 export function CheckoutPage() {
-    const { validators, actions, totalCartCost, user, dirty } = useCheckout();
+    const { validators, actions, totalCartCost, user, dirty, error } = useCheckout();
 
     return (
         <div className="max-w-sm mx-auto">
             <h1 className="title">CHECKOUT</h1>
+
+            {error && <ServerError message={error} />}
 
             {/* Mostra il totale del carrello */}
             <div className="text-xl my-3 border-b">&euro; {totalCartCost}</div>
